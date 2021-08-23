@@ -1,12 +1,25 @@
 <?php
-require_once('db.php');
+require_once("vendor/autoload.php");
+require_once('database.php');
 require_once('articleController.php');
 require_once('articleModel.php');
 require_once('paginator.php');
 require_once('parser.php');
 
-$url = 'https:\/\/habr.com\/';
-$countPag = 3;
-$dbName = 'articleDb';
-$dbPass = 'a1234b';
-$tableName = 'article';
+$config = array(
+  'url' => 'https://habr.com/',
+  'per_page' => 5,
+  'countParse' => 10,
+  'host' => 'localhost',
+  'username' => 'root',
+  'db_name' => 'articledb',
+  'password' => '',
+  'table_name' => 'articles'
+);
+
+$article = new articleController($config);
+if ($_POST['parse'] == 1) {
+  $parse = $article->parse();
+  echo '<meta http-equiv="refresh" content="0;URL=/index.php">';
+}
+$data = $article->getData(10);

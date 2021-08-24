@@ -12,21 +12,37 @@ class articleModel
     $this->table_name = $table_name;
   }
 
+  public function getIds(): array
+  {
+    $query = "SELECT  article_id  FROM " . $this->table_name;
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    $num = $stmt->rowCount();
+
+    if ($num == 0) return $article_id = [];
+
+    $article_id = array();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      $article_id[] = $row['article_id'];
+    }
+    return $article_id;
+  }
+
   public function create($data)
   {
+    $data = array_reverse($data);
     $query = "INSERT INTO " . $this->table_name . " SET  article_id=:article_id, title=:title, text=:text, url=:url";
-
     $stmt = $this->conn->prepare($query);
-    $value = array(
-      'article_id' => $data[0]['article_id'],
-      'title' => $data[0]['title'],
-      'text' =>  $data[0]['text'],
-      'url' =>  $data[0]['url']
-    );
-
-    if ($stmt->execute($value)) return true;
-
-    return false;
+    foreach ($data as $item) {
+      $value = array(
+        'article_id' => $item['article_id'],
+        'title' => $item['title'],
+        'text' =>  $item['text'],
+        'url' =>  $item['url']
+      );
+      $stmt->execute($value);
+    }
   }
 
   public function read($page, $per_page): array
@@ -34,7 +50,7 @@ class articleModel
     $total = 47;
     $page222  = Paginator::get($page, $per_page, $total);
 
-    $query = "SELECT  *  FROM " . $this->table_name;
+    $query = "SELECT  *  FROM " . $this->table_name . "  ORDER BY id DESC";
     $stmt = $this->conn->prepare($query);
     $stmt->execute();
     $num = $stmt->rowCount();

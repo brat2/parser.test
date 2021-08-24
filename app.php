@@ -7,9 +7,9 @@ require_once('paginator.php');
 require_once('parser.php');
 
 $config = array(
-  'url' => 'https://habr.com/',
+  'url' => 'https://habr.com/ru/all/',
   'per_page' => 5,
-  'countParse' => 10,
+  'countParse' => 5,
   'host' => 'localhost',
   'username' => 'root',
   'db_name' => 'articledb',

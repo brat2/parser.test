@@ -14,12 +14,21 @@ require_once('app.php');
 <body>
   <form action="app.php" method="post">
     <input type="hidden" name="parse" value="1">
-    <input type="submit" value="Парсить">
+    <input type="submit" value="Загрузить">
   </form>
   <?php
+
   foreach ($data as $dat) {
-    echo '<h3><a href="">' . $dat['title'] . '</a></h3>';
-    echo '<p>' . $dat['text'] . '</p>';
+    $text = htmlspecialchars_decode($dat['text']);
+    $text = strip_tags($text);
+    $text = substr($text, 0, 200);
+    $text = rtrim($text, "!,.-");
+    $text = substr($text, 0, strrpos($text, ' '));
+    $text = $text."… ";
+    
+
+    echo '<h3><a href="' . $dat['url'] . '" target="_blank">' . $dat['title'] . '</a></h3>';
+    echo '<p>' . $text . '</p>';
     echo '<button> полный текст</button>';
   }
   ?>

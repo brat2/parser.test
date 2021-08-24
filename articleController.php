@@ -28,8 +28,10 @@ class articleController
   public function parse()
   {
     $parser = new Parser();
-    $data = $parser->parse($this->url, $this->countParse);
     $articles = new articleModel($this->db, $this->table_name);
+    $ids = $articles->getIds();
+    $data = $parser->parse($this->url, $this->countParse,$ids);
+    
     $articles->create($data);
   }
 }

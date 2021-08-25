@@ -47,18 +47,18 @@ class articleModel
 
   public function read($page, $per_page): array
   {
-    $total = 47;
-    $page222  = Paginator::get($page, $per_page, $total);
+    $total = 37;
+    $paginate  = Paginator::get($page, $per_page, $total);
+    $from = (($page-1) * $per_page);
 
-    $query = "SELECT  *  FROM " . $this->table_name . "  ORDER BY id DESC";
+    $query = "SELECT  *  FROM " . $this->table_name . "  ORDER BY id DESC LIMIT " . $from . ", " . $per_page;
     $stmt = $this->conn->prepare($query);
     $stmt->execute();
     $num = $stmt->rowCount();
 
     if ($num == 0) return $products_arr = [];
 
-    $products_arr = array();
-
+    $products_arr = ['articles'=> [], 'meta' => []];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
       extract($row);
@@ -76,9 +76,10 @@ class articleModel
         "url" => $url
       );
 
-      array_push($products_arr, $article);
+      array_push($products_arr['articles'], $article);
     }
-
+    $products_arr['meta'] = $paginate;
+    
     http_response_code(200);
     return $products_arr;
   }

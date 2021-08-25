@@ -24,10 +24,13 @@ $article = new articleController($config);
 if ($_POST['parse'] == true) {
   $parse = $article->parse();
 }
-if (isset($_GET['id'])) {
-  $parse = $article->getFullText($_GET['id']);
+if ($_GET['fulltext']) {
+  $parse = $article->getFullText($_GET['fulltext']);
   echo $data = json_encode($parse);
   exit;
 }
-$data = $article->getData();
+
+$page = $_GET['page'] ?? 1;
+
+$data = $article->getData($page);
 echo $data = json_encode($data);

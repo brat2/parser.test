@@ -3,11 +3,11 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 require_once("vendor/autoload.php");
-require_once('database.php');
-require_once('articleController.php');
-require_once('articleModel.php');
-require_once('paginator.php');
-require_once('parser.php');
+require_once('classes/database.php');
+require_once('classes/controller.php');
+require_once('classes/article.php');
+require_once('classes/paginator.php');
+require_once('classes/parser.php');
 
 $config = array(
   'url' => 'https://habr.com/ru/all/',

@@ -27,7 +27,9 @@
     }
 
     #info {
-      color: blueviolet;
+      color: purple;
+      height: 14pt;
+      padding: 5px 0 0 0;
     }
 
     .full {
@@ -38,16 +40,25 @@
     .full img {
       width: 100%;
     }
+
+    .top {
+      text-align: center;
+      padding: 10px 0 0 0;
+    }
   </style>
 </head>
 
 <body>
-  <button id="parse">Загрузить</button>
-  <span id="info"></span>
+  <div class="top">
+    <button id="parse">Загрузить</button>
+    <div id="info"></div>
+  </div>
+
   <hr>
   <div class="articles"></div>
   <div class="paginate"></div>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js">
+  </script>
   <script>
     $(document).ready(function() {
       $.getJSON("app.php", function(data) {
@@ -64,9 +75,6 @@
             $("#info").text('идёт загрузка с сайта!');
           },
           success: function(data) {
-            $(".articles").empty();
-            $(".paginate").empty();
-            $("#info").empty();
             getData(data);
           }
         });
@@ -82,27 +90,26 @@
             src: "#full_" + id,
             type: "inline"
           }]);
-
         });
       });
 
       $(document).on('click', '.paginate a', function(e) {
-        var link = $(this).attr('href');
-        $.getJSON(link, function(data) {
-          $(".articles").empty();
-          $(".paginate").empty();
+        var url = $(this).attr('href');
+        $.getJSON(url, function(data) {
           getData(data);
         });
         return false;
       });
 
       function getData(data) {
+        $(".articles").empty();
+        $(".paginate").empty();
+        $("#info").empty();
         $.each(data.articles, function(key, val) {
           content = `
-       <div id="` + val.article_id + `" class="article"><h3><a href="` + val.url + `" target="_blank">` + val.title + `</a></h3>
+       <div id="` + val.article_id + `" class="article"><h4><a href="` + val.url + `" target="_blank">` + val.title + `</a></h4>
         <p>` + val.text + `</p>
         <button class="fullText" >полный текст</button></div>`;
-
           $(".articles").append(content);
         });
         $.each(data.meta, function(key, val) {

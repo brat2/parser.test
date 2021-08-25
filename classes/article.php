@@ -1,6 +1,6 @@
 <?php
 
-class articleModel
+class Article
 {
 
   private $conn;

@@ -12,7 +12,7 @@ require_once('classes/parser.php');
 $config = array(
   'url' => 'https://habr.com/ru/all/',
   'per_page' => 5,
-  'countParse' => 5,
+  'count_parse' => 5,
   'host' => 'localhost',
   'username' => 'root',
   'db_name' => 'articledb',
@@ -20,17 +20,14 @@ $config = array(
   'table_name' => 'articles'
 );
 
-$article = new articleController($config);
-if ($_POST['parse'] == true) {
-  $parse = $article->parse();
-}
+$article = new Controller($config);
+if ($_POST['parse'] == true) $article->parse();
+
 if ($_GET['fulltext']) {
-  $parse = $article->getFullText($_GET['fulltext']);
-  echo $data = json_encode($parse);
+  $full_text = $article->getFullText($_GET['fulltext']);
+  echo $data = json_encode($full_text);
   exit;
 }
 
-$page = $_GET['page'] ?? 1;
-
-$data = $article->getData($page);
+$data = $article->getData($_GET['page'] ?? 1);
 echo $data = json_encode($data);

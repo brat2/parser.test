@@ -8,7 +8,7 @@ class Parser
     $html = file_get_contents($url);
 
     $doc = phpQuery::newDocument($html);
-    $articles = $doc->find('.tm-articles-list__item:lt(4)');
+    $articles = $doc->find('.tm-articles-list__item:lt(' . ($count - 1) . ')');
     foreach ($articles as $article) {
       $pqArticle = pq($article);
 

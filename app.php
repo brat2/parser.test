@@ -2,13 +2,14 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
+require_once('classes/config.php');
 require_once("vendor/autoload.php");
 require_once('classes/database.php');
 require_once('classes/controller.php');
 require_once('classes/article.php');
 require_once('classes/paginator.php');
 require_once('classes/parser.php');
-
+/*
 $config = array(
   'url' => 'https://habr.com/ru/all/',
   'per_page' => 5,
@@ -19,8 +20,8 @@ $config = array(
   'password' => '',
   'table_name' => 'articles'
 );
-
-$article = new Controller($config);
+*/
+$article = new Controller();
 if ($_POST['parse'] == true) $article->parse();
 
 if ($_GET['fulltext']) {

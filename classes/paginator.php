@@ -2,27 +2,35 @@
 
 class Paginator
 {
-  public static function get($current_page, $per_page, $total): array
+  private $current;
+  private $total;
+  private $last;
+
+  public function __construct(int $current, int $total)
   {
-
-    $last = ceil($total / $per_page);
-
-    $arr[0] = self::getLink($current_page, $last, -2, '<<');
-    $arr[1] = self::getLink($current_page, $last, -1, ($current_page - 1));
-    $arr[2] = self::getLink($current_page, $last, 0, $current_page);
-    $arr[3] = self::getLink($current_page, $last, 1, ($current_page + 1));
-    $arr[4] = self::getLink($current_page, $last, 2, '>>');
-    return $arr;
+    $this->current = $current;
+    $this->total = $total;
+    $this->last = ceil($total / Config::$per_page);
   }
 
-  protected static function getLink($current, $last, $ofset, $lable)
+  public function get(): array
   {
-    $page = ($current + $ofset);
-    if ($current == 1 && $ofset < 0) return ' ';
-    if ($current == $last && $ofset > 0) return ' ';
-    if ($ofset == 0) return ' <b>' . $current . '</b> ';
+    $data[0] = $this->getLink(-2, '<<');
+    $data[1] = $this->getLink(-1, ($this->current - 1));
+    $data[2] = $this->getLink(0, $this->current);
+    $data[3] = $this->getLink(1, ($this->current + 1));
+    $data[4] = $this->getLink(2, '>>');
+    return $data;
+  }
+
+  protected function getLink(int $ofset, string $lable): string
+  {
+    $page = ($this->current + $ofset);
+    if ($this->current == 1 && $ofset < 0) return ' ';
+    if ($this->current == $this->last && $ofset > 0) return ' ';
+    if ($ofset == 0) return ' <b>' . $this->current . '</b> ';
     if ($ofset == -2) $page = 1;
-    if ($ofset == 2) $page = $last;
+    if ($ofset == 2) $page = $this->last;
     $link = ' <a href="/app.php?page=' . $page  . '">' . $lable . '</a> ';
     return $link;
   }

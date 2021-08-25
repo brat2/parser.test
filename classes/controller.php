@@ -2,42 +2,30 @@
 
 class Controller
 {
-  private $url;
-  private $per_page;
-  private $count_parse;
-  private $table_name;
-  private $db;
+  private $article;
 
-  public function __construct(array $arr)
+  public function __construct()
   {
-    $this->url = $arr['url'];
-    $this->per_page = $arr['per_page'];
-    $this->count_parse = $arr['count_parse'];
-    $this->table_name = $arr['table_name'];
-
-    $database = new Database($arr);
-    $this->db = $database->getConnection();
+    $db = (new Database)->getConnection();
+    $this->article = new Article($db);
   }
 
-  public function getData($page = 1): array
-  {
-    $articles = new Article($this->db, $this->table_name);
-    return $articles->read($page, $this->per_page);
+  public function getData(int $page = 1): array
+  { 
+    return $this->article->read($page);
   }
 
-  public function getFullText($id)
+  public function getFullText(int $id): array
   {
-    $articles = new Article($this->db, $this->table_name);
-    return $articles->readOne($id);
+    return $this->article->readOne($id);
   }
 
   public function parse(): void
   {
     $parser = new Parser();
-    $articles = new Article($this->db, $this->table_name);
-    $ids = $articles->getIds();
-    $data = $parser->parse($this->url, $this->count_parse, $ids);
+    $ids = $this->article->getIds();
+    $data = $parser->parse($ids);
 
-    $articles->create($data);
+    $this->article->create($data);
   }
 }

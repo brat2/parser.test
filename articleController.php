@@ -25,13 +25,19 @@ class articleController
     return $articles->read($page, $this->per_page);
   }
 
+  public function getFullText($id)
+  {
+    $articles = new articleModel($this->db, $this->table_name);
+    return $articles->readOne($id);
+  }
+
   public function parse()
   {
     $parser = new Parser();
     $articles = new articleModel($this->db, $this->table_name);
     $ids = $articles->getIds();
-    $data = $parser->parse($this->url, $this->countParse,$ids);
-    
+    $data = $parser->parse($this->url, $this->countParse, $ids);
+
     $articles->create($data);
   }
 }

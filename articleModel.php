@@ -62,7 +62,12 @@ class articleModel
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
       extract($row);
-
+      $text = htmlspecialchars_decode($text);
+      $text = strip_tags($text);
+      $text = substr($text, 0, 200);
+      $text = rtrim($text, "!,.-");
+      $text = substr($text, 0, strrpos($text, ' '));
+      $text = $text . "… ";
       $article = array(
         "id" => $id,
         "article_id" => $article_id,
@@ -75,8 +80,22 @@ class articleModel
     }
 
     http_response_code(200);
-
-
     return $products_arr;
+  }
+
+  public function readOne($id): array
+  {
+    $query = "SELECT  text  FROM " . $this->table_name . "  WHERE article_id = " . $id . " LIMIT 1";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    extract($row);
+    $text = htmlspecialchars_decode($text);
+    $article = ["text" => $text];
+
+    http_response_code(200);
+    return $article;
   }
 }

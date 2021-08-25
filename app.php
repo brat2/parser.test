@@ -1,4 +1,7 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+
 require_once("vendor/autoload.php");
 require_once('database.php');
 require_once('articleController.php');
@@ -18,8 +21,13 @@ $config = array(
 );
 
 $article = new articleController($config);
-if ($_POST['parse'] == 1) {
+if ($_POST['parse'] == true) {
   $parse = $article->parse();
-  echo '<meta http-equiv="refresh" content="0;URL=/index.php">';
 }
-$data = $article->getData(10);
+if (isset($_GET['id'])) {
+  $parse = $article->getFullText($_GET['id']);
+  echo $data = json_encode($parse);
+  exit;
+}
+$data = $article->getData();
+echo $data = json_encode($data);

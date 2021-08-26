@@ -3,13 +3,11 @@
 class Paginator
 {
   private $current;
-  private $total;
   private $last;
 
   public function __construct(int $current, int $total)
-  {
+  { 
     $this->current = $current;
-    $this->total = $total;
     $this->last = ceil($total / Config::$per_page);
   }
 

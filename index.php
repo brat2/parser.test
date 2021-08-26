@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
 
   <style>
+    p, button{
+      font-size: 22pt;
+    }
+
     .articles {
       padding: 20px;
     }
@@ -23,13 +27,14 @@
     .paginate {
       text-align: center;
       padding-bottom: 20px;
-      font-size: 14pt;
+      font-size: 22pt;
     }
 
     #info {
       color: purple;
       height: 14pt;
-      padding: 5px 0 0 0;
+      padding: 5px 0;
+      font-size: 18pt;
     }
 
     .full {
@@ -107,7 +112,7 @@
         $("#info").empty();
         $.each(data.articles, function(key, val) {
           content = `
-       <div id="` + val.article_id + `" class="article"><h4><a href="` + val.url + `" target="_blank">` + val.title + `</a></h4>
+       <div id="` + val.article_id + `" class="article"><h1><a href="` + val.url + `" target="_blank">` + val.title + `</a></h1>
         <p>` + val.text + `</p>
         <button class="fullText" >полный текст</button></div>`;
           $(".articles").append(content);

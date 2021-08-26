@@ -25,7 +25,6 @@ class Controller
     $parser = new Parser();
     $ids = $this->article->getIds();
     $data = $parser->parse($ids);
-
     $this->article->create($data);
   }
 }

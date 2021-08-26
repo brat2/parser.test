@@ -9,18 +9,7 @@ require_once('classes/controller.php');
 require_once('classes/article.php');
 require_once('classes/paginator.php');
 require_once('classes/parser.php');
-/*
-$config = array(
-  'url' => 'https://habr.com/ru/all/',
-  'per_page' => 5,
-  'count_parse' => 5,
-  'host' => 'localhost',
-  'username' => 'root',
-  'db_name' => 'articledb',
-  'password' => '',
-  'table_name' => 'articles'
-);
-*/
+
 $article = new Controller();
 if ($_POST['parse'] == true) $article->parse();
 

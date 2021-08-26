@@ -3,12 +3,10 @@
 class Article
 {
   private $conn;
-  private $total;
 
   public function __construct(PDO $db)
   {
     $this->conn = $db;
-    $this->total = $this->conn->query("SELECT COUNT(*) as count FROM " . Config::$table_name)->fetchColumn();
   }
 
   public function read(int $page): array
@@ -37,7 +35,8 @@ class Article
       );
       array_push($data['articles'], $article);
     }
-    $data['meta'] = (new Paginator($page, $this->total))->get();
+    $total = $this->conn->query("SELECT COUNT(*) as count FROM " . Config::$table_name)->fetchColumn();
+    $data['meta'] = (new Paginator($page, $total))->get();
     http_response_code(200);
     return $data;
   }
